@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Measurement Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .form-container {
+      width: 80%;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1e7e34;
+    }
+
+    a {
+      display: block;
+      width: 200px;
+      text-align: center;
+      margin: 30px auto;
+      text-decoration: none;
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Measurement Dashboard</h1>
+
+  <div class="form-container">
+    <h3>Update Shade and Dimensions</h3>
+    <table>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer Name</th>
+        <th>Phone No</th>
+        <th>Address</th>
+        <th>Shade</th>
+        <th>Dimensions</th>
+        <th>Action</th>
+      </tr>
+
+      {% for o in orders %}
+      <tr>
+        <form method="POST" action="/measurement">
+          <td>{{ o['order_id'] }}</td>
+          <td>{{ o['customer_name'] }}</td>
+          <td>{{ o['phone_no'] }}</td>
+          <td>{{ o['address'] }}</td>
+          <td>
+            <input type="text" name="shade" value="{{ o['shade'] or '' }}" placeholder="Enter shade">
+          </td>
+          <td>
+            <input type="text" name="dimensions" value="{{ o['dimensions'] or '' }}" placeholder="Enter dimensions">
+          </td>
+          <td>
+            <input type="hidden" name="order_id" value="{{ o['order_id'] }}">
+            <button type="submit">Save</button>
+          </td>
+        </form>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <a href="/">← Back to Home</a>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Marketing Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .form-container {
+      width: 60%;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    input[type="text"], input[type="tel"] {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 80%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    a {
+      display: block;
+      width: 200px;
+      text-align: center;
+      margin: 20px auto;
+      text-decoration: none;
+      background-color: #28a745;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    a:hover {
+      background-color: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <h1>Marketing Dashboard</h1>
+
+  <div class="form-container">
+    <h3>Add New Customer</h3>
+    <form method="POST" action="/marketing">
+      <input type="text" name="customer_name" placeholder="Customer Name" required>
+      <input type="tel" name="phone_no" placeholder="Phone Number" required>
+      <br>
+      <button type="submit">Add Customer</button>
+    </form>
+  </div>
+
+  <h2 style="text-align:center;">Existing Customers</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Customer Name</th>
+      <th>Phone Number</th>
+    </tr>
+    {% for customer in customers %}
+    <tr>
+      <td>{{ customer['customer_id'] }}</td>
+      <td>{{ customer['customer_name'] }}</td>
+      <td>{{ customer['phone_no'] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <a href="/">← Back to Home</a>
+</body>
+</html>

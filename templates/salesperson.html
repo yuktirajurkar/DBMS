@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salesperson Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .form-container {
+      width: 60%;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    select, input[type="text"], input[type="number"] {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 90%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    a {
+      display: block;
+      width: 200px;
+      text-align: center;
+      margin: 20px auto;
+      text-decoration: none;
+      background-color: #28a745;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    a:hover {
+      background-color: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <h1>Salesperson Dashboard</h1>
+
+  <div class="form-container">
+    <h3>Add Order Details</h3>
+    <form method="POST" action="/salesperson">
+      <label>Select Customer:</label><br>
+      <select name="customer_id" required>
+        <option value="">-- Choose a Customer --</option>
+        {% for c in customers %}
+        <option value="{{ c['customer_id'] }}">{{ c['customer_name'] }} ({{ c['phone_no'] }})</option>
+        {% endfor %}
+      </select><br>
+
+      <input type="text" name="type" placeholder="Curtain Type" required><br>
+      <input type="number" name="quantity" placeholder="Quantity" required><br>
+      <input type="text" name="address" placeholder="Customer Address" required><br>
+
+      <button type="submit">Add Order</button>
+    </form>
+  </div>
+
+  <h2 style="text-align:center;">All Orders</h2>
+  <table>
+    <tr>
+      <th>Order ID</th>
+      <th>Customer Name</th>
+      <th>Phone No</th>
+      <th>Type</th>
+      <th>Quantity</th>
+      <th>Address</th>
+    </tr>
+    {% for o in orders %}
+    <tr>
+      <td>{{ o['order_id'] }}</td>
+      <td>{{ o['customer_name'] }}</td>
+      <td>{{ o['phone_no'] }}</td>
+      <td>{{ o['type'] }}</td>
+      <td>{{ o['quantity'] }}</td>
+      <td>{{ o['address'] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <a href="/">← Back to Home</a>
+</body>
+</html>
