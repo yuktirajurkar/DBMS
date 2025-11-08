@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Measurement Dashboard</title>
-</head>
-<style>
-  /* Reset and Base Styles */
+  <title>Owner Dashboard</title>
+  <style>
+    /* Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -98,7 +97,7 @@ body {
 #pageContent {
   filter: blur(5px);
   pointer-events: none;
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
@@ -121,78 +120,43 @@ h1 {
   border: 1px solid rgba(161, 110, 133, 0.2);
 }
 
-.form-container h3 {
-  color: #8b5a6f;
-  margin-bottom: 20px;
-  font-size: 22px;
-  font-weight: 600;
-}
-
-/* Form Styles */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-form select,
-form input[type="text"] {
-  padding: 12px 16px;
-  border: 2px solid #f8e8eb;
-  border-radius: 10px;
-  font-size: 15px;
-  background: #fdf4f5;
-  color: #4a4a4a;
-  transition: all 0.3s ease;
-}
-
-form select:focus,
-form input[type="text"]:focus {
-  outline: none;
-  border-color: #a16e85;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(161, 110, 133, 0.1);
-}
-
-form button {
-  background: linear-gradient(135deg, #8b5a6f 0%, #a16e85 100%);
-  color: white;
-  border: none;
-  padding: 14px 30px;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(139, 90, 111, 0.2);
-}
-
-form button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 90, 111, 0.3);
-}
-
-form button:active {
-  transform: translateY(0);
-}
-
 /* Top Controls */
 .top-controls {
   margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-#searchInput {
+#searchInput,
+#readyFilter,
+#deliveryFilter,
+#dateFilter {
   padding: 12px 16px;
   border: 2px solid #f8e8eb;
   border-radius: 10px;
   font-size: 15px;
   background: #fdf4f5;
-  width: 250px;
   color: #4a4a4a;
   transition: all 0.3s ease;
 }
 
-#searchInput:focus {
+#searchInput {
+  width: 200px;
+  flex-grow: 1;
+  min-width: 150px;
+}
+
+#readyFilter,
+#deliveryFilter,
+#dateFilter {
+  flex-shrink: 0;
+}
+
+#searchInput:focus,
+#readyFilter:focus,
+#deliveryFilter:focus,
+#dateFilter:focus {
   outline: none;
   border-color: #a16e85;
   background: white;
@@ -200,7 +164,7 @@ form button:active {
 }
 
 /* Table Styles */
-#measurementTable {
+#ownerTable {
   width: 100%;
   border-collapse: collapse;
   background: white;
@@ -209,7 +173,7 @@ form button:active {
   box-shadow: 0 2px 10px rgba(139, 90, 111, 0.08);
 }
 
-#measurementTable th {
+#ownerTable th {
   background: linear-gradient(135deg, #8b5a6f 0%, #a16e85 100%);
   color: white;
   padding: 16px 12px;
@@ -220,19 +184,19 @@ form button:active {
   letter-spacing: 0.5px;
 }
 
-#measurementTable td {
+#ownerTable td {
   padding: 14px 12px;
   border-bottom: 1px solid #f8e8eb;
   color: #4a4a4a;
   font-size: 14px;
 }
 
-#measurementTable tr:hover {
+#ownerTable tr:hover {
   background: #fdf4f5;
   transition: background 0.2s ease;
 }
 
-#measurementTable tr:last-child td {
+#ownerTable tr:last-child td {
   border-bottom: none;
 }
 
@@ -281,7 +245,8 @@ a[href="/"]:hover {
   transform: translateX(-3px);
   box-shadow: 0 4px 15px rgba(139, 90, 111, 0.2);
 }
-</style>
+  </style>
+</head>
 <body>
   <!-- POPUP AUTH -->
   <div id="uidPopup">
@@ -294,51 +259,51 @@ a[href="/"]:hover {
   </div>
 
   <div id="pageContent">
-    <h1>Measurement Dashboard</h1>
+    <h1>Owner Dashboard</h1>
 
-    <!-- Add Shade/Dimensions -->
-    <div class="form-container">
-      <h3>Add / Update Measurement</h3>
-      <form method="POST" action="/measurement">
-        <select name="order_id" required>
-          <option value="">Select Order</option>
-          {% for o in orders %}
-          <option value="{{ o['order_id'] }}">Order {{ o['order_id'] }} — {{ o['customer_name'] }} ({{ o['phone_no'] }})</option>
-          {% endfor %}
-        </select>
-        <input type="text" name="shade" placeholder="Shade" required>
-        <input type="text" name="dimensions" placeholder="Dimensions (e.g. 5x7 ft)" required>
-        <button type="submit">Save</button>
-      </form>
-    </div>
-
-    <!-- Display Data -->
     <div class="form-container">
       <div class="top-controls">
-        <input type="text" id="searchInput" placeholder="Search by Customer Name" style="padding:8px;width:250px;">
+        <input type="text" id="searchInput" placeholder="Search by Customer Name" style="padding:8px;width:200px;">
+        <select id="readyFilter" style="padding:8px;">
+          <option value="">All Ready Status</option>
+          <option value="Yes">Ready: Yes</option>
+          <option value="No">Ready: No</option>
+        </select>
+        <select id="deliveryFilter" style="padding:8px;">
+          <option value="">All Delivery Status</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Pending">Pending</option>
+        </select>
+        <input type="date" id="dateFilter" style="padding:8px;">
       </div>
 
-      <table id="measurementTable">
+      <table id="ownerTable">
         <tr>
           <th>Order ID</th>
           <th>Customer Name</th>
-          <th>Phone Number</th>
-          <th>Address</th>
+          <th>Phone</th>
           <th>Type</th>
           <th>Quantity</th>
+          <th>Address</th>
           <th>Shade</th>
           <th>Dimensions</th>
+          <th>Ready</th>
+          <th>Delivery Status</th>
+          <th>Delivery Date</th>
         </tr>
         {% for r in records %}
         <tr>
-          <td>{{ r['order_id'] }}</td>
-          <td>{{ r['customer_name'] }}</td>
-          <td>{{ r['phone_no'] }}</td>
-          <td>{{ r['address'] }}</td>
+          <td>{{ r['order_id'] or '-' }}</td>
+          <td>{{ r['customer_name'] or '-' }}</td>
+          <td>{{ r['phone_no'] or '-' }}</td>
           <td>{{ r['type'] or '-' }}</td>
           <td>{{ r['quantity'] or '-' }}</td>
+          <td>{{ r['address'] or '-' }}</td>
           <td>{{ r['shade'] or '-' }}</td>
           <td>{{ r['dimensions'] or '-' }}</td>
+          <td>{{ r['ready'] or '-' }}</td>
+          <td>{{ r['delivery_status'] or 'Pending' }}</td>
+          <td>{{ r['delivery_date'] or '-' }}</td>
         </tr>
         {% endfor %}
       </table>
@@ -358,7 +323,7 @@ a[href="/"]:hover {
 
     function checkUID() {
       const uid = document.getElementById("uidInput").value;
-      if (uid === "MSR321") {
+      if (uid === "OWN123") {
         popup.style.display = "none";
         content.style.filter = "none";
         content.style.pointerEvents = "auto";
@@ -368,18 +333,39 @@ a[href="/"]:hover {
       }
     }
 
-    // --- SEARCH ---
+    // --- FILTERS ---
     const searchInput = document.getElementById('searchInput');
-    const rows = document.querySelectorAll("#measurementTable tr:not(:first-child)");
+    const readyFilter = document.getElementById('readyFilter');
+    const deliveryFilter = document.getElementById('deliveryFilter');
+    const dateFilter = document.getElementById('dateFilter');
+    const rows = document.querySelectorAll("#ownerTable tr:not(:first-child)");
     const toggleButton = document.getElementById("toggleButton");
     let showingAll = false;
 
-    searchInput.addEventListener("input", function() {
-      const filter = this.value.toLowerCase();
+    function applyFilters() {
+      const nameFilter = searchInput.value.toLowerCase();
+      const readyVal = readyFilter.value;
+      const deliveryVal = deliveryFilter.value;
+      const dateVal = dateFilter.value;
+
       rows.forEach(row => {
         const name = row.cells[1]?.textContent.toLowerCase() || "";
-        row.style.display = name.includes(filter) ? "" : "none";
+        const ready = row.cells[8]?.textContent.trim() || "";
+        const delivery = row.cells[9]?.textContent.trim() || "";
+        const date = row.cells[10]?.textContent.trim() || "";
+
+        const matchesName = name.includes(nameFilter);
+        const matchesReady = !readyVal || ready === readyVal;
+        const matchesDelivery = !deliveryVal || delivery === deliveryVal;
+        const matchesDate = !dateVal || date === dateVal;
+
+        row.style.display = (matchesName && matchesReady && matchesDelivery && matchesDate) ? "" : "none";
       });
+    }
+
+    [searchInput, readyFilter, deliveryFilter, dateFilter].forEach(el => {
+      el.addEventListener('input', applyFilters);
+      el.addEventListener('change', applyFilters);
     });
 
     // --- SHOW MORE / LESS ---
@@ -392,7 +378,7 @@ a[href="/"]:hover {
       toggleButton.textContent = showingAll ? "Show Less" : "Show More";
     }
 
-    // Show Less by default (10 rows visible)
+    // Default view: only 10 rows
     rows.forEach((row, index) => {
       if (index >= 10) row.style.display = "none";
     });

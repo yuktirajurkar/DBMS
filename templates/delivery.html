@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marketing Dashboard</title>
+  <title>Delivery Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -315,6 +315,7 @@
   </style>
 </head>
 <body>
+  <!-- POPUP AUTH -->
   <div id="uidPopup">
     <div class="popup-content">
       <h3>Enter Access ID</h3>
@@ -325,35 +326,48 @@
   </div>
 
   <div id="pageContent">
-    <h1>Marketing Dashboard</h1>
+    <h1>Delivery Dashboard</h1>
 
-    <!-- Add Customer Form -->
+    <!-- Update Delivery Status -->
     <div class="form-container">
-      <h3>Add New Customer</h3>
-      <form method="POST" action="/marketing">
-        <input type="text" name="customer_name" placeholder="Customer Name" required>
-        <input type="tel" name="phone_no" placeholder="Phone Number" required>
-        <button type="submit">Add</button>
+      <h3>Update Delivery Status</h3>
+      <form method="POST" action="/delivery">
+        <input type="number" name="order_id" placeholder="Enter Order ID" required>
+        <select name="status" required>
+          <option value="">Select Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Delivered">Delivered</option>
+        </select>
+        <button type="submit">Update</button>
       </form>
     </div>
 
-    <!-- Search and Table -->
+    <!-- Orders Table -->
     <div class="form-container">
       <div class="top-controls">
         <input type="text" id="searchInput" placeholder="Search by Customer Name">
+        <input type="date" id="dateFilter">
       </div>
 
-      <table id="customerTable">
+      <table id="deliveryTable">
         <tr>
-          <th>ID</th>
+          <th>Order ID</th>
           <th>Customer Name</th>
-          <th>Phone Number</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>Ready</th>
+          <th>Status</th>
+          <th>Date</th>
         </tr>
-        {% for c in customers %}
+        {% for r in records %}
         <tr>
-          <td>{{ c['customer_id'] }}</td>
-          <td>{{ c['customer_name'] }}</td>
-          <td>{{ c['phone_no'] }}</td>
+          <td>{{ r['order_id'] }}</td>
+          <td>{{ r['customer_name'] }}</td>
+          <td>{{ r['phone_no'] }}</td>
+          <td>{{ r['address'] }}</td>
+          <td>{{ r['ready'] or '-' }}</td>
+          <td>{{ r['status'] or 'Pending' }}</td>
+          <td>{{ r['date'] or '-' }}</td>
         </tr>
         {% endfor %}
       </table>
@@ -373,7 +387,7 @@
 
     function checkUID() {
       const uid = document.getElementById("uidInput").value;
-      if (uid === "MKT456") {
+      if (uid === "DLV987") {
         popup.style.display = "none";
         content.style.filter = "none";
         content.style.pointerEvents = "auto";
@@ -385,7 +399,7 @@
 
     // --- SEARCH ---
     const searchInput = document.getElementById('searchInput');
-    const rows = document.querySelectorAll("#customerTable tr:not(:first-child)");
+    const rows = document.querySelectorAll("#deliveryTable tr:not(:first-child)");
     const toggleButton = document.getElementById("toggleButton");
     let showingAll = false;
 
@@ -394,6 +408,16 @@
       rows.forEach(row => {
         const name = row.cells[1]?.textContent.toLowerCase() || "";
         row.style.display = name.includes(filter) ? "" : "none";
+      });
+    });
+
+    // --- DATE FILTER ---
+    document.getElementById('dateFilter').addEventListener('change', function() {
+      const selectedDate = this.value;
+      rows.forEach(row => {
+        const date = row.cells[6]?.textContent.trim();
+        if (!selectedDate || date === selectedDate) row.style.display = "";
+        else row.style.display = "none";
       });
     });
 
@@ -407,7 +431,7 @@
       toggleButton.textContent = showingAll ? "Show Less" : "Show More";
     }
 
-    // Start with 10 rows visible (Show Less by default)
+    // Default: show only 10 rows
     rows.forEach((row, index) => {
       if (index >= 10) row.style.display = "none";
     });

@@ -4,140 +4,398 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Salesperson Dashboard</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-
-    .form-container {
-      width: 60%;
-      margin: 20px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    label {
-      font-weight: 600;
-      color: #333;
-    }
-
-    select, input[type="text"], input[type="number"] {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 15px;
-    }
-
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    table {
-      width: 90%;
-      margin: 30px auto;
-      border-collapse: collapse;
-      background: white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #007bff;
-      color: white;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-
-    a {
-      display: block;
-      width: 200px;
-      text-align: center;
-      margin: 20px auto;
-      text-decoration: none;
-      background-color: #28a745;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    a:hover {
-      background-color: #1e7e34;
-    }
-  </style>
 </head>
+<style>
+  /* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #fdf4f5 0%, #f8e8eb 100%);
+  min-height: 100vh;
+  padding: 20px;
+  color: #4a4a4a;
+}
+
+/* Popup Auth Styles */
+#uidPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(139, 90, 111, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(8px);
+}
+
+.popup-content {
+  background: #fdf4f5;
+  padding: 40px 50px;
+  border-radius: 20px;
+  box-shadow: 0 15px 50px rgba(139, 90, 111, 0.4);
+  text-align: center;
+  border: 2px solid #a16e85;
+  max-width: 400px;
+  width: 90%;
+}
+
+.popup-content h3 {
+  color: #8b5a6f;
+  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.popup-content input {
+  width: 100%;
+  padding: 12px 18px;
+  border: 2px solid #a16e85;
+  border-radius: 10px;
+  font-size: 16px;
+  background: white;
+  color: #4a4a4a;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.popup-content input:focus {
+  outline: none;
+  border-color: #8b5a6f;
+  box-shadow: 0 0 0 3px rgba(139, 90, 111, 0.1);
+}
+
+.popup-content button {
+  background: linear-gradient(135deg, #8b5a6f 0%, #a16e85 100%);
+  color: white;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 90, 111, 0.3);
+}
+
+.popup-content button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 90, 111, 0.4);
+}
+
+.popup-content button:active {
+  transform: translateY(0);
+}
+
+/* Page Content */
+#pageContent {
+  filter: blur(5px);
+  pointer-events: none;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #8b5a6f;
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 36px;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(139, 90, 111, 0.1);
+}
+
+/* Form Container */
+.form-container {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(139, 90, 111, 0.15);
+  margin-bottom: 30px;
+  border: 1px solid rgba(161, 110, 133, 0.2);
+}
+
+.form-container h3 {
+  color: #8b5a6f;
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form select,
+form input[type="text"],
+form input[type="number"] {
+  padding: 12px 16px;
+  border: 2px solid #f8e8eb;
+  border-radius: 10px;
+  font-size: 15px;
+  background: #fdf4f5;
+  color: #4a4a4a;
+  transition: all 0.3s ease;
+}
+
+form select:focus,
+form input[type="text"]:focus,
+form input[type="number"]:focus {
+  outline: none;
+  border-color: #a16e85;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(161, 110, 133, 0.1);
+}
+
+form button {
+  background: linear-gradient(135deg, #8b5a6f 0%, #a16e85 100%);
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 90, 111, 0.2);
+}
+
+form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 90, 111, 0.3);
+}
+
+form button:active {
+  transform: translateY(0);
+}
+
+/* Top Controls */
+.top-controls {
+  margin-bottom: 20px;
+}
+
+#searchInput {
+  padding: 12px 16px;
+  border: 2px solid #f8e8eb;
+  border-radius: 10px;
+  font-size: 15px;
+  background: #fdf4f5;
+  width: 250px;
+  color: #4a4a4a;
+  transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: #a16e85;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(161, 110, 133, 0.1);
+}
+
+/* Table Styles */
+#ordersTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(139, 90, 111, 0.08);
+}
+
+#ordersTable th {
+  background: linear-gradient(135deg, #8b5a6f 0%, #a16e85 100%);
+  color: white;
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#ordersTable td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f8e8eb;
+  color: #4a4a4a;
+  font-size: 14px;
+}
+
+#ordersTable tr:hover {
+  background: #fdf4f5;
+  transition: background 0.2s ease;
+}
+
+#ordersTable tr:last-child td {
+  border-bottom: none;
+}
+
+/* Toggle Button */
+#toggleButton {
+  background: white;
+  color: #8b5a6f;
+  border: 2px solid #a16e85;
+  padding: 10px 30px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+#toggleButton:hover {
+  background: linear-gradient(135deg, #8b5a6f 0%, #a16e85 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(139, 90, 111, 0.2);
+}
+
+#toggleButton:active {
+  transform: translateY(0);
+}
+
+/* Back Link */
+a[href="/"] {
+  display: inline-block;
+  margin-top: 30px;
+  color: #8b5a6f;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: 2px solid #a16e85;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+a[href="/"]:hover {
+  background: linear-gradient(135deg, #8b5a6f 0%, #a16e85 100%);
+  color: white;
+  transform: translateX(-3px);
+  box-shadow: 0 4px 15px rgba(139, 90, 111, 0.2);
+}
+</style>
 <body>
-  <h1>Salesperson Dashboard</h1>
-
-  <div class="form-container">
-    <h3>Add Order Details</h3>
-    <form method="POST" action="/salesperson">
-      <label>Select Customer:</label><br>
-      <select name="customer_id" required>
-        <option value="">-- Choose a Customer --</option>
-        {% for c in customers %}
-        <option value="{{ c['customer_id'] }}">{{ c['customer_name'] }} ({{ c['phone_no'] }})</option>
-        {% endfor %}
-      </select><br>
-
-      <input type="text" name="type" placeholder="Curtain Type" required><br>
-      <input type="number" name="quantity" placeholder="Quantity" required><br>
-      <input type="text" name="address" placeholder="Customer Address" required><br>
-
-      <button type="submit">Add Order</button>
-    </form>
+  <!-- POPUP AUTH -->
+  <div id="uidPopup">
+    <div class="popup-content">
+      <h3>Enter Access ID</h3>
+      <input type="password" id="uidInput" placeholder="Enter your unique ID" />
+      <br>
+      <button onclick="checkUID()">Submit</button>
+    </div>
   </div>
 
-  <h2 style="text-align:center;">All Orders</h2>
-  <table>
-    <tr>
-      <th>Order ID</th>
-      <th>Customer Name</th>
-      <th>Phone No</th>
-      <th>Type</th>
-      <th>Quantity</th>
-      <th>Address</th>
-    </tr>
-    {% for o in orders %}
-    <tr>
-      <td>{{ o['order_id'] }}</td>
-      <td>{{ o['customer_name'] }}</td>
-      <td>{{ o['phone_no'] }}</td>
-      <td>{{ o['type'] }}</td>
-      <td>{{ o['quantity'] }}</td>
-      <td>{{ o['address'] }}</td>
-    </tr>
-    {% endfor %}
-  </table>
+  <div id="pageContent">
+    <h1>Salesperson Dashboard</h1>
 
-  <a href="/">← Back to Home</a>
+    <!-- Add Order Form -->
+    <div class="form-container">
+      <h3>Add New Order</h3>
+      <form method="POST" action="/salesperson">
+        <select name="customer_id" required>
+          <option value="">Select Customer</option>
+          {% for c in customers %}
+          <option value="{{ c['customer_id'] }}">{{ c['customer_name'] }} ({{ c['phone_no'] }})</option>
+          {% endfor %}
+        </select>
+        <input type="text" name="type" placeholder="Curtain Type" required>
+        <input type="number" name="quantity" placeholder="Quantity" required>
+        <input type="text" name="address" placeholder="Address" required>
+        <button type="submit">Add Order</button>
+      </form>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="form-container">
+      <div class="top-controls">
+        <input type="text" id="searchInput" placeholder="Search by Customer Name" style="padding:8px;width:250px;">
+      </div>
+
+      <table id="ordersTable">
+        <tr>
+          <th>Order ID</th>
+          <th>Customer Name</th>
+          <th>Phone Number</th>
+          <th>Type</th>
+          <th>Quantity</th>
+          <th>Address</th>
+        </tr>
+        {% for o in orders %}
+        <tr>
+          <td>{{ o['order_id'] }}</td>
+          <td>{{ o['customer_name'] }}</td>
+          <td>{{ o['phone_no'] }}</td>
+          <td>{{ o['type'] or '-' }}</td>
+          <td>{{ o['quantity'] or '-' }}</td>
+          <td>{{ o['address'] or '-' }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      <div style="text-align:center;margin-top:10px;">
+        <button id="toggleButton" onclick="toggleRows()">Show More</button>
+      </div>
+    </div>
+
+    <a href="/">← Back to Home</a>
+  </div>
+
+  <script>
+    // --- POPUP AUTH ---
+    const popup = document.getElementById("uidPopup");
+    const content = document.getElementById("pageContent");
+
+    function checkUID() {
+      const uid = document.getElementById("uidInput").value;
+      if (uid === "SLS789") {
+        popup.style.display = "none";
+        content.style.filter = "none";
+        content.style.pointerEvents = "auto";
+      } else {
+        alert("❌ Incorrect ID. Access Denied.");
+        window.location.href = "/";
+      }
+    }
+
+    // --- SEARCH ---
+    const searchInput = document.getElementById('searchInput');
+    const rows = document.querySelectorAll("#ordersTable tr:not(:first-child)");
+    const toggleButton = document.getElementById("toggleButton");
+    let showingAll = false;
+
+    searchInput.addEventListener("input", function() {
+      const filter = this.value.toLowerCase();
+      rows.forEach(row => {
+        const name = row.cells[1]?.textContent.toLowerCase() || "";
+        row.style.display = name.includes(filter) ? "" : "none";
+      });
+    });
+
+    // --- SHOW MORE / LESS ---
+    function toggleRows() {
+      showingAll = !showingAll;
+      rows.forEach((row, index) => {
+        if (!showingAll && index >= 10) row.style.display = "none";
+        else row.style.display = "";
+      });
+      toggleButton.textContent = showingAll ? "Show Less" : "Show More";
+    }
+
+    // Start with 10 rows visible, button says “Show More”
+    rows.forEach((row, index) => {
+      if (index >= 10) row.style.display = "none";
+    });
+    toggleButton.textContent = "Show More";
+  </script>
 </body>
 </html>

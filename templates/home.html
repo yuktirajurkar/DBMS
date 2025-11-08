@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Curtain Business - Select Role</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -12,51 +13,54 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #fdf4f5 0%, #f8e8eb 50%, #f5dfe3 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 100%);
     }
 
     /* Header */
     header {
-      background: linear-gradient(90deg, #9333ea 0%, #4f46e5 100%);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #8b5a6f 0%, #a16e85 100%);
+      box-shadow: 0 4px 12px rgba(139, 90, 111, 0.15);
+      padding: 1.25rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .header-content {
-      max-width: 1280px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 1rem 1.5rem;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
 
-    h1 {
-      font-size: 1.875rem;
-      font-weight: 600;
-      color: white;
-    }
-
-    .header-buttons {
-      display: flex;
-      gap: 1rem;
+    header h1 {
+      color: #fff;
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
     .header-btn {
-      padding: 0.5rem 1rem;
-      color: white;
-      background: transparent;
-      border: none;
-      border-radius: 0.375rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
     }
 
     .header-btn:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
     }
 
     /* Main Content */
@@ -65,121 +69,180 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 3rem 1rem;
+      padding: 3rem 1.5rem;
     }
 
     .card {
-      background: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 2rem;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(139, 90, 111, 0.12);
+      padding: 3rem;
+      max-width: 900px;
       width: 100%;
-      max-width: 28rem;
+      border: 1px solid rgba(161, 110, 133, 0.1);
+    }
+
+    .description {
+      background: linear-gradient(135deg, #fdf4f5 0%, #f8e8eb 100%);
+      border-left: 4px solid #a16e85;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2.5rem;
+    }
+
+    .description p {
+      color: #5d3a4a;
+      line-height: 1.7;
+      font-size: 1rem;
     }
 
     h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #1e293b;
-      margin-bottom: 1.5rem;
+      color: #8b5a6f;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
       text-align: center;
+      letter-spacing: 0.5px;
     }
 
     .role-label {
       display: block;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: #334155;
-      margin-bottom: 0.75rem;
+      color: #6d4557;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
     }
 
     .roles-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
     }
 
     .role-btn {
-      padding: 0.75rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 0.5rem;
-      background: white;
-      color: #334155;
-      text-align: left;
-      cursor: pointer;
+      background: linear-gradient(135deg, #fdf4f5 0%, #fff 100%);
+      border: 2px solid #d4a5b8;
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
       text-decoration: none;
-      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .role-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(161, 110, 133, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .role-btn:hover::before {
+      left: 100%;
     }
 
     .role-btn:hover {
-      border-color: #cbd5e1;
-      background-color: #f8fafc;
-    }
-
-    .role-btn:active {
-      border-color: #3b82f6;
-      background-color: #eff6ff;
-      color: #1d4ed8;
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(139, 90, 111, 0.2);
+      border-color: #a16e85;
+      background: linear-gradient(135deg, #fff 0%, #fdf4f5 100%);
     }
 
     .role-icon {
-      font-size: 2rem;
-      margin-bottom: 0.25rem;
+      font-size: 3rem;
+      filter: grayscale(20%);
+      transition: all 0.3s ease;
+    }
+
+    .role-btn:hover .role-icon {
+      transform: scale(1.15) rotate(5deg);
+      filter: grayscale(0%);
     }
 
     .role-name {
-      font-size: 0.875rem;
-      font-weight: 500;
+      color: #6d4557;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-align: center;
+      transition: color 0.3s ease;
+    }
+
+    .role-btn:hover .role-name {
+      color: #8b5a6f;
     }
 
     /* Footer */
     footer {
-      background: white;
-      border-top: 1px solid #e2e8f0;
-      padding: 1.5rem;
+      background: linear-gradient(135deg, #8b5a6f 0%, #a16e85 100%);
+      color: #fff;
+      padding: 2rem 1.5rem;
+      margin-top: auto;
     }
 
     .footer-content {
-      max-width: 1280px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 1.5rem;
       text-align: center;
-      font-size: 0.875rem;
-      color: #64748b;
     }
 
     .footer-content p {
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      opacity: 0.95;
     }
 
     .footer-links {
       display: flex;
       justify-content: center;
-      gap: 1.5rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
     }
 
     .footer-links a {
-      color: #64748b;
+      color: #fff;
       text-decoration: none;
-      transition: color 0.2s;
+      font-size: 0.9rem;
+      opacity: 0.9;
+      transition: opacity 0.3s ease;
     }
 
     .footer-links a:hover {
-      color: #2563eb;
+      opacity: 1;
+      text-decoration: underline;
     }
 
-    @media (max-width: 640px) {
-      h1 {
-        font-size: 1.5rem;
+    /* Responsive */
+    @media (max-width: 768px) {
+      .card {
+        padding: 2rem 1.5rem;
       }
 
-      .header-buttons {
-        gap: 0.5rem;
+      h2 {
+        font-size: 1.6rem;
       }
 
-      .header-btn {
-        padding: 0.375rem 0.75rem;
-        font-size: 0.875rem;
+      .roles-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .role-btn {
+        padding: 1.5rem 1rem;
+      }
+
+      header h1 {
+        font-size: 1.4rem;
       }
     }
   </style>
@@ -190,8 +253,7 @@
     <div class="header-content">
       <h1>Curtain Business</h1>
       <div class="header-buttons">
-        <button class="header-btn">About</button>
-        <button class="header-btn">Help</button>
+        <button class="header-btn">Contact</button>
       </div>
     </div>
   </header>
@@ -199,6 +261,10 @@
   <!-- Main Content -->
   <main>
     <div class="card">
+      <div class="description">
+        <p>A streamlined database management system designed to enhance communication and workflow efficiency across all departments of your curtain business. Connect seamlessly from lead generation to final delivery.</p>
+      </div>
+      
       <h2>Welcome</h2>
       
       <div>
@@ -206,32 +272,32 @@
         <div class="roles-grid">
 
           <a href="/owner" class="role-btn">
-            <div class="role-icon">👔</div>
+            <div class="role-icon">💼</div>
             <div class="role-name">Owner</div>
           </a>
 
           <a href="/marketing" class="role-btn">
-            <div class="role-icon">📊</div>
+            <div class="role-icon">📢</div>
             <div class="role-name">Marketing Person</div>
           </a>
 
           <a href="/salesperson" class="role-btn">
-            <div class="role-icon">🤝</div>
+            <div class="role-icon">🎯</div>
             <div class="role-name">Salesperson</div>
           </a>
 
           <a href="/measurement" class="role-btn">
-            <div class="role-icon">📏</div>
+            <div class="role-icon">📐</div>
             <div class="role-name">Measurement Person</div>
           </a>
 
           <a href="/manufacturer" class="role-btn">
-            <div class="role-icon">🏭</div>
+            <div class="role-icon">🏗️</div>
             <div class="role-name">Manufacturer</div>
           </a>
 
           <a href="/delivery" class="role-btn">
-            <div class="role-icon">🚚</div>
+            <div class="role-icon">🚛</div>
             <div class="role-name">Delivery Person</div>
           </a>
 
@@ -244,10 +310,12 @@
   <footer>
     <div class="footer-content">
       <p>© 2025 Curtain Business Management System</p>
+      <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #ffd9e3;">Empowering your business with seamless workflow management</p>
       <div class="footer-links">
-        <a href="#">Help</a>
-        <a href="#">Privacy</a>
-        <a href="#">Contact</a>
+        <a href="#">Help Center</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact Us</a>
       </div>
     </div>
   </footer>
